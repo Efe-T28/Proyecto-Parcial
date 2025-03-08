@@ -9,7 +9,7 @@ const BarraBusqueda = ({ onSearch }) => {
     };
 
     return (
-        <div className="container mt-3">
+        <div className="container mt-5 mb-4">
             <form onSubmit={handleSubmit} className="d-flex">
                 <input
                     type="text"
@@ -23,6 +23,7 @@ const BarraBusqueda = ({ onSearch }) => {
                     Buscar
                 </button>
             </form>
+            <h2>Productos</h2>
         </div>
     );
 };
