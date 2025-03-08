@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import BarraBusqueda from "./BarraBusqueda";
+import { fetchProducts } from "./Api";
+
 
 function Productos() {
     const [productos, setProductos] = useState([]);
     const [productosFiltrados, setProductosFiltrados] = useState([]);
+
+    const reiniciarProductos = () => {
+        setProductosFiltrados(productos);
+    };
 
     useEffect(() => {
         const listaProductos = localStorage.getItem("productos");
@@ -13,12 +19,11 @@ function Productos() {
             setProductos(datos);
             setProductosFiltrados(datos);
         } else {
-            fetch("https://fakestoreapi.com/products")
-                .then((res) => res.json())
-                .then(data => {
-                    setProductos(data);
-                    setProductosFiltrados(data);
-                    localStorage.setItem("productos", JSON.stringify(data));
+            fetchProducts()
+            .then(data => {
+                setProductos(data);
+                setProductosFiltrados(data);
+                localStorage.setItem("productos", JSON.stringify(data));
                 })
                 .catch((error) => console.error("Error consultando:", error));
         }
@@ -26,14 +31,20 @@ function Productos() {
 
     const buscarProductos = (searchTerm) => {
         const filtered = productos.filter(producto =>
-            producto.title.toLowerCase().includes(searchTerm.toLowerCase())
+            producto.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            producto.description.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setProductosFiltrados(filtered);
     };
 
     return (
         <div className="container mt-4">
+            <div className="d-flex justify-content-between align-items-center mb-4">
+            <button onClick={reiniciarProductos} className="btn btn-secondary">
+                Volver al inicio
+            </button>
             <BarraBusqueda onSearch={buscarProductos} />
+            </div>
             <div className="row">
                 {productosFiltrados.map((product) => (
                     <div key={product.id} className="col-md-4 mb-4">
@@ -44,7 +55,6 @@ function Productos() {
                                 alt={product.title}
                                 style={{ height: '200px', objectFit: 'contain' }}
                             />
-                            js
                             <div className="card-body">
                                 <h5 className="titulo-producto">{product.title}</h5>
                                 <p className="descripción-prodcuto">{product.description}</p>
