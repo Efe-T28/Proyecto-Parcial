@@ -31,8 +31,10 @@ function Productos() {
 
     const buscarProductos = (searchTerm) => {
         const filtered = productos.filter(producto =>
+
             producto.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             producto.description.toLowerCase().includes(searchTerm.toLowerCase())
+
         );
         setProductosFiltrados(filtered);
     };
