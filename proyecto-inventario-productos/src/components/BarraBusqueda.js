@@ -23,7 +23,6 @@ const BarraBusqueda = ({ onSearch }) => {
                     Buscar
                 </button>
             </form>
-            <h2>Productos</h2>
         </div>
     );
 };
